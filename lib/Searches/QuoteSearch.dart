@@ -12,6 +12,7 @@ class QuoteSearch extends StatelessWidget {
           children: <Widget>[
             Container(
                 padding: EdgeInsets.symmetric(vertical: 8.0),
+                width: 500,
                 child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),

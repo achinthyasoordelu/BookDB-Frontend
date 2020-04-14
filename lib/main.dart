@@ -5,7 +5,7 @@ import 'Searches/QuoteSearch.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: 'Navigation Basics',
+    title: 'BookDB',
     home: Home(),
   ));
 }

@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 
-class TagSearch extends StatelessWidget {
+class TagSearch extends StatefulWidget {
+  @override
+  _TagSearch createState() => new _TagSearch();
+}
+
+class _TagSearch extends State<TagSearch> {
+  Set<String> selectedTags = new Set();
+  String _selectedTags = "";
+  var tags = <String> ["Finance", "Business", "Technology"]; //TODO fetch with DB query
+
   @override
   Widget build(BuildContext context) {
+
+    void updateSelectedTagText() {
+      setState(() => _selectedTags = selectedTags.toString());
+    }
+
+    void resetTags() {
+      selectedTags = new Set();
+      setState(() => _selectedTags = "");
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Search by Tag"),
@@ -10,27 +29,33 @@ class TagSearch extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            Container(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Select tags:",
-                    //TODO convert to drop down based on DB query
-                  ),
-                )
+            Text("Selected tags: $_selectedTags"),
+            Container (
+              width: 500,
+              child: TagDropDown(
+                    (String tag) {
+                      selectedTags.add(tag);
+                      updateSelectedTagText();
+                      },
+                tags,
+              ),
             ),
             RaisedButton(
               onPressed: () {
+                resetTags();
+              },
+              child: Text('Reset Tags'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                print(_selectedTags);
                 //TODO query DB
-                // Navigate back to first route when tapped.
               },
               child: Text('Submit'),
             ),
             RaisedButton(
               onPressed: () {
                 Navigator.pop(context);
-                // Navigate back to first route when tapped.
               },
               child: Text('Home'),
             ),
@@ -38,6 +63,37 @@ class TagSearch extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
         ),
       )
+    );
+  }
+}
+
+class TagDropDown extends StatefulWidget {
+  final Function(String) addTag;
+  final List<String> tags;
+  TagDropDown(this.addTag, this.tags);
+
+  @override
+  _TagDropDownState createState() => _TagDropDownState();
+}
+
+class _TagDropDownState extends State<TagDropDown> {
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: "Select tag(s):",
+      ),
+      items: widget.tags.map((String tag) {
+        return new DropdownMenuItem<String>(
+          value: tag,
+          child: new Text(tag),
+        );
+      }).toList(),
+      onChanged: (chosenTag) {
+        widget.addTag(chosenTag);
+      },
     );
   }
 }
