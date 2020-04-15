@@ -1,3 +1,4 @@
+import 'package:BookDBFrontend/Display/QuoteList.dart';
 import 'package:BookDBFrontend/Models/Tags.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -40,7 +41,10 @@ class _TagSearch extends State<TagSearch> {
 
     void addTag(String tag) {
         selectedTags.add(tag);
-        setState(() => _selectedTags = selectedTags.toString());
+        setState(() => _selectedTags = selectedTags.toString()
+            .replaceAll(' ', '')
+            .replaceAll('{', '')
+            .replaceAll('}', ''));
     }
 
     return Scaffold(
@@ -92,6 +96,8 @@ class _TagSearch extends State<TagSearch> {
               onPressed: () {
                 print(_selectedTags);
                 //TODO query DB
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    QuoteList(queryURL: global.baseURL + "query/tagSearch/" + _selectedTags)));
               },
               child: Text('Submit'),
             ),
