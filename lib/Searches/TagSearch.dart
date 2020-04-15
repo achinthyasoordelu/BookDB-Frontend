@@ -1,4 +1,18 @@
+import 'package:BookDBFrontend/Models/Tags.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:BookDBFrontend/globals.dart' as global;
+import 'dart:async';
+import 'dart:convert';
+
+Future<Tags> fetchTags() async {
+  final response = await http.get(global.baseURL + "query/getTags");
+  if (response.statusCode == 200) {
+    return Tags.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to get tags');
+  }
+}
 
 class TagSearch extends StatefulWidget {
   @override
@@ -8,18 +22,25 @@ class TagSearch extends StatefulWidget {
 class _TagSearch extends State<TagSearch> {
   Set<String> selectedTags = new Set();
   String _selectedTags = "";
-  var tags = <String> ["Finance", "Business", "Technology"]; //TODO fetch with DB query
+  Future<Tags> futureTags;
+
+  @override
+  void initState() {
+    super.initState();
+    futureTags = fetchTags();
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    void updateSelectedTagText() {
-      setState(() => _selectedTags = selectedTags.toString());
-    }
-
     void resetTags() {
       selectedTags = new Set();
       setState(() => _selectedTags = "");
+    }
+
+    void addTag(String tag) {
+        selectedTags.add(tag);
+        setState(() => _selectedTags = selectedTags.toString());
     }
 
     return Scaffold(
@@ -32,13 +53,34 @@ class _TagSearch extends State<TagSearch> {
             Text("Selected tags: $_selectedTags"),
             Container (
               width: 500,
-              child: TagDropDown(
-                    (String tag) {
-                      selectedTags.add(tag);
-                      updateSelectedTagText();
-                      },
-                tags,
-              ),
+              child: DropdownButtonHideUnderline(
+                  child: new FutureBuilder<Tags>(
+                    future: fetchTags(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return new Container();
+                      } else if (snapshot.hasData) {
+                        return DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Select tag(s):",
+                          ),
+                          items: snapshot.data.tags.map((String tag) {
+                            return new DropdownMenuItem<String>(
+                              value: tag,
+                              child: new Text(tag),
+                            );
+                          }).toList(),
+                          onChanged: (chosenTag) {
+                            addTag(chosenTag);
+                          },
+                        );
+                      } else {
+                        return LinearProgressIndicator();
+                      }
+                    },
+                  )
+              )
             ),
             RaisedButton(
               onPressed: () {
@@ -63,37 +105,6 @@ class _TagSearch extends State<TagSearch> {
           mainAxisAlignment: MainAxisAlignment.center,
         ),
       )
-    );
-  }
-}
-
-class TagDropDown extends StatefulWidget {
-  final Function(String) addTag;
-  final List<String> tags;
-  TagDropDown(this.addTag, this.tags);
-
-  @override
-  _TagDropDownState createState() => _TagDropDownState();
-}
-
-class _TagDropDownState extends State<TagDropDown> {
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "Select tag(s):",
-      ),
-      items: widget.tags.map((String tag) {
-        return new DropdownMenuItem<String>(
-          value: tag,
-          child: new Text(tag),
-        );
-      }).toList(),
-      onChanged: (chosenTag) {
-        widget.addTag(chosenTag);
-      },
     );
   }
 }
