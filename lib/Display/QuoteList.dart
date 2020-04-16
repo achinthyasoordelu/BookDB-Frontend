@@ -4,11 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
-Future<Quote> fetchQuote(url) async { //TODO convert this to a list of quotes
+Future<List<Quote>> fetchQuote(url) async {
   final response = await http.get(url);
   if (response.statusCode == 200) {
-    Quote quote = Quote.fromJson(json.decode(response.body));
-    return quote;
+    var quotesJson = json.decode(response.body)['quotes'] as List;
+    return quotesJson.map((quote) => Quote.fromJson(quote)).toList();
   } else {
     throw Exception('Failed to get quote from $url');
   }
@@ -49,10 +49,8 @@ class _QuoteList extends State<QuoteList> {
     if (!isPerformingRequest) {
       setState(() => isPerformingRequest = true);
       List<Quote> quoteList = new List();
-      for (var i = 0; i < 10; i++) {
-        quoteList.add(await fetchQuote(widget.queryURL));
+      quoteList.addAll(await fetchQuote(widget.queryURL));
         //TODO add some iterator to note to get next page of results
-      }
       setState(() {
         items.addAll(quoteList);
         isPerformingRequest = false;

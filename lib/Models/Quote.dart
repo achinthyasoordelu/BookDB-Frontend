@@ -1,17 +1,29 @@
+import 'dart:convert';
+
 class Quote {
-  final String author;
-  final String title;
-  final String quote;
-  final List<String> tags;
+  String author;
+  String title;
+  String quote;
+  List<String> tags;
 
-  Quote({this.author, this.title, this.quote, this.tags});
+  Quote(this.author, this.title, this.quote, this.tags);
 
-  factory Quote.fromJson(Map<String, dynamic> json) {
+  /*factory Quote.fromJson(Map<String, dynamic> json) {
+    print("In Quote");
     return Quote(
         author: json['Author'],
         title: json['Title'],
         quote: json['quote'],
         tags: json['tags'].cast<String>()
     );
+  }*/
+
+  factory Quote.fromJson(dynamic json) {
+    var decodedJson = jsonDecode(json[0]);
+    return Quote(
+        decodedJson['Author'] as String,
+        decodedJson['Title'] as String,
+        decodedJson['quote'] as String,
+        decodedJson['tags'].cast<String>() as List<String>);
   }
 }
