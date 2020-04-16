@@ -71,11 +71,31 @@ class _QuoteList extends State<QuoteList> {
             return _buildProgressIndicator();
           } else {
             return Card(child: Column(
+              //TODO this should be dynamic. If I tag searched, I don't need tag in every card.
+              // If i title searched, don't need title everywhere. Common parts should be in
+              //header, only different bits should be here. Maybe export this to be "quotes card"
+              //"title card", "tag card", etc.
               children: <Widget>[
-                Text("Title: " + items[index].title),
-                Text("Author: " + items[index].author),
-                Text("Quote: "+ items[index].quote),
-                Text("Tags: "+ items[index].tags.toString()),
+                Text(
+                    "Title: " + items[index].title + "   Author: " + items[index].author,
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 12
+                    ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                      items[index].quote,
+                      style: TextStyle(
+                        fontSize: 15
+                      ) //TODO
+                  )
+                ),
+                Text(
+                    "Tags: "+ items[index].tags.toString(),
+                    style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 0.7)
+                ),
               ],
             )
             );
