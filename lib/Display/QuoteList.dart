@@ -16,8 +16,8 @@ Future<List<Quote>> fetchQuote(url) async {
 
 class QuoteList extends StatefulWidget {
   final String queryURL;
-  final String quotesBeingShown;
-  const QuoteList({this.queryURL, this.quotesBeingShown});
+  final String headerDisplay;
+  const QuoteList({this.queryURL, this.headerDisplay});
 
   @override
   _QuoteList createState() => new _QuoteList();
@@ -64,7 +64,7 @@ class _QuoteList extends State<QuoteList> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Quotes for " + widget.quotesBeingShown)
+        title: Text("Quotes for " + widget.headerDisplay)
       ),
       body: ListView.builder(
         itemCount: items.length + 1,

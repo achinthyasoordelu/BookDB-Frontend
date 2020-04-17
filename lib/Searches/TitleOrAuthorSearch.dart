@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:BookDBFrontend/globals.dart' as global;
+import 'package:BookDBFrontend/Display/QuoteList.dart';
 
-class TitleOrAuthorSearch extends StatelessWidget {
+class TitleOrAuthorSearch extends StatefulWidget {
+  @override
+  _TitleOrAuthorSearch createState() => new _TitleOrAuthorSearch();
+}
+
+class _TitleOrAuthorSearch extends State<TitleOrAuthorSearch> {
+
+  final titleOrAuthorSearchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,6 +24,7 @@ class TitleOrAuthorSearch extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 width: 500,
                 child: TextFormField(
+                  controller: titleOrAuthorSearchController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Enter part of title or author:",
@@ -22,8 +33,9 @@ class TitleOrAuthorSearch extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                //TODO query DB
-                // Navigate back to first route when tapped.
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    QuoteList(queryURL: global.baseURL + "query/quoteSearch/" + titleOrAuthorSearchController.text,
+                        headerDisplay: titleOrAuthorSearchController.text)));
               },
               child: Text('Submit'),
             ),
