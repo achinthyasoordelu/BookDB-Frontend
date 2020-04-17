@@ -97,7 +97,8 @@ class _TagSearch extends State<TagSearch> {
                 print(_selectedTags);
                 //TODO query DB
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                    QuoteList(queryURL: global.baseURL + "query/tagSearch/" + _selectedTags)));
+                    QuoteList(queryURL: global.baseURL + "query/tagSearch/" + _selectedTags,
+                              quotesBeingShown: _selectedTags)));
               },
               child: Text('Submit'),
             ),
