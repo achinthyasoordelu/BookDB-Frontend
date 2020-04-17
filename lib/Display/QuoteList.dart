@@ -63,7 +63,7 @@ class _QuoteList extends State<QuoteList> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Quotes")
+        title: Text("Quotes for " + widget.queryURL)
       ),
       body: ListView.builder(
         itemCount: items.length + 1,
@@ -71,45 +71,7 @@ class _QuoteList extends State<QuoteList> {
           if (index == items.length) {
             return _buildProgressIndicator();
           } else {
-            return Padding(
-                padding: EdgeInsets.all(10.0),
-                child:
-                  Card(
-                      child: Column(
-                      //TODO this should be dynamic. If I tag searched, I don't need tag in every card.
-                      // If i title searched, don't need title everywhere. Common parts should be in
-                      //header, only different bits should be here. Maybe export this to be "quotes card"
-                      //"title card", "tag card", etc.
-                        children: <Widget>[
-                          Text(
-                            items[index].title + String.fromCharCode(mdash) + items[index].author,
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              fontSize: 12,
-                              fontFamily: 'NotoSerif',
-                            ),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                  items[index].quote,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: 'NotoSerif',
-                                  ) //TODO
-                              )
-                          ),
-                          Text(
-                              "Tags: "+ items[index].tags.toString(),
-                              style: TextStyle(
-                                fontSize: 8,
-                                fontFamily: 'NotoSerif',
-                              )
-                          ),
-                        ],
-                      )
-                  )
-            );
+            return _getContextDependentCard(items[index]);
           }
         },
         controller: _scrollController,
@@ -126,5 +88,66 @@ class _QuoteList extends State<QuoteList> {
             child: new CircularProgressIndicator())
       )
     );
+  }
+  
+  Widget _getContextDependentCard(Quote quote) {
+    if (widget.queryURL.contains("tagSearch")) {
+      return Card(
+          child: Column(
+            children: <Widget>[
+              Text(
+                quote.title + String.fromCharCode(mdash) + quote.author,
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontSize: 12,
+                  fontFamily: 'NotoSerif',
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                      quote.quote,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'NotoSerif',
+                      )
+                  )
+              ),
+            ],
+          )
+      );
+    } else {
+      return Card(
+          child: Column(
+            children: <Widget>[
+              Text(
+                quote.title + String.fromCharCode(mdash) + quote.author,
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontSize: 12,
+                  fontFamily: 'NotoSerif',
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                      quote.quote,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'NotoSerif',
+                      )
+                  )
+              ),
+              Text(
+                  "Tags: "+ quote.tags.toString(),
+                  style: TextStyle(
+                    fontSize: 8,
+                    fontFamily: 'NotoSerif',
+                  )
+              ),
+            ],
+          )
+      );
+    }
   }
 }
