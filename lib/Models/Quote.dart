@@ -8,15 +8,13 @@ class Quote {
 
   Quote(this.author, this.title, this.quote, this.tags);
 
-  /*factory Quote.fromJson(Map<String, dynamic> json) {
-    print("In Quote");
-    return Quote(
-        author: json['Author'],
-        title: json['Title'],
-        quote: json['quote'],
-        tags: json['tags'].cast<String>()
-    );
-  }*/
+  Map<String, dynamic> toJson() =>
+      {
+        'title' : title,
+        'author' : author,
+        'quote' : quote,
+        'tags' : tags.join(",")
+      };
 
   factory Quote.fromJson(dynamic json) {
     var decodedJson = jsonDecode(json[0]);

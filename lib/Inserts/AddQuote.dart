@@ -1,7 +1,22 @@
+import 'dart:convert';
+
+import 'package:BookDBFrontend/Models/Quote.dart';
 import 'package:BookDBFrontend/Models/Tags.dart';
 import 'package:BookDBFrontend/Models/UI/TagDropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:BookDBFrontend/globals.dart' as global;
+
+Future<http.Response> postQuote(Quote quote) {
+  return http.post(
+    global.baseURL + "insertQuote",
+    headers: <String, String> {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(quote),
+  );
+}
 
 class AddQuote extends StatefulWidget {
   @override
@@ -13,6 +28,7 @@ class _AddQuote extends State<AddQuote> {
   String _selectedTags = "";
   Future<Tags> futureTags;
   final _addQuoteFormKey = GlobalKey<FormState>();
+  Quote quote = new Quote("","","",[]);
 
   void resetTags() {
     selectedTags = new Set();
@@ -25,6 +41,10 @@ class _AddQuote extends State<AddQuote> {
         .replaceAll(' ', '')
         .replaceAll('{', '')
         .replaceAll('}', ''));
+  }
+
+  void loadSelectedTagsIntoQuote() {
+    quote.tags = _selectedTags.split(",");
   }
 
   @override
@@ -43,6 +63,9 @@ class _AddQuote extends State<AddQuote> {
                   width: 500,
                   padding: EdgeInsets.all(10.0),
                   child: TextFormField(
+                    onSaved: (String value) {
+                      quote.title = value;
+                    },
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Please enter a title';
@@ -58,6 +81,9 @@ class _AddQuote extends State<AddQuote> {
                     width: 500,
                     padding: EdgeInsets.all(10.0),
                     child: TextFormField(
+                        onSaved: (String value) {
+                          quote.author = value;
+                        },
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter an author';
@@ -73,6 +99,9 @@ class _AddQuote extends State<AddQuote> {
                     width: 1000,
                     padding: EdgeInsets.all(10.0),
                     child: TextFormField( //TODO add formatting capabilities
+                        onSaved: (String value) {
+                          quote.quote = value;
+                        },
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter a quote';
@@ -102,8 +131,46 @@ class _AddQuote extends State<AddQuote> {
                     print(_selectedTags);
                     if (_addQuoteFormKey.currentState.validate() && _selectedTags != "") {
                       print("Valid input");
-                      //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
-                      //TODO backend post
+                      _addQuoteFormKey.currentState.save(); //Load title, author, and quote into quote model
+                      loadSelectedTagsIntoQuote();
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return new FutureBuilder(
+                                future: postQuote(quote),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError || snapshot.hasData && snapshot.data.statusCode != 200) {
+                                    return AlertDialog(
+                                        title: new Text("Error"),
+                                        content: new Text("Insert failed"),
+                                        actions: <Widget> [
+                                          new FlatButton(
+                                              child: new Text("Close"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              }
+                                          )
+                                        ]
+                                    );
+                                  }
+                                  else if (snapshot.hasData) {
+                                    return AlertDialog(
+                                        title: new Text("Inserted successfully"),
+                                        actions: <Widget> [
+                                          new FlatButton(
+                                              child: new Text("Close"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              }
+                                          )
+                                        ]);
+                                  } else {
+                                    return Container();
+                                  }
+                                }
+                            );
+                          }
+                      );
                     } else if (_selectedTags == "") {
                       showDialog(
                         context: context,
