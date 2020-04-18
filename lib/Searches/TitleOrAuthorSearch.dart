@@ -21,7 +21,7 @@ class _TitleOrAuthorSearch extends State<TitleOrAuthorSearch> {
         child: Column(
           children: <Widget>[
             Container(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 width: 500,
                 child: TextFormField(
                   controller: titleOrAuthorSearchController,

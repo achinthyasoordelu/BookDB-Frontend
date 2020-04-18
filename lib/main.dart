@@ -1,3 +1,4 @@
+import 'package:BookDBFrontend/Inserts/AddQuote.dart';
 import 'package:flutter/material.dart';
 import 'Searches/TitleOrAuthorSearch.dart';
 import 'Searches/TagSearch.dart';
@@ -38,6 +39,13 @@ class Home extends StatelessWidget {
               child: Text('Search in Quote'),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => QuoteSearch()));
+                // Navigate to second route when tapped.
+              },
+            ),
+            RaisedButton(
+              child: Text('Add Quote'),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddQuote()));
                 // Navigate to second route when tapped.
               },
             )
