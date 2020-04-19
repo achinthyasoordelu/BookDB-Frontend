@@ -34,7 +34,7 @@ class _TitleOrAuthorSearch extends State<TitleOrAuthorSearch> {
             RaisedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                    QuoteList(queryURL: global.baseURL + "query/quoteSearch/" + titleOrAuthorSearchController.text,
+                    QuoteList(queryURL: global.baseURL + "query/titleOrAuthorSearch/" + titleOrAuthorSearchController.text,
                         headerDisplay: titleOrAuthorSearchController.text)));
               },
               child: Text('Submit'),
