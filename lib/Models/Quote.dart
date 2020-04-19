@@ -17,11 +17,10 @@ class Quote {
       };
 
   factory Quote.fromJson(dynamic json) {
-    var decodedJson = jsonDecode(json[0]);
     return Quote(
-        decodedJson['Author'] as String,
-        decodedJson['Title'] as String,
-        decodedJson['quote'] as String,
-        decodedJson['tags'].cast<String>() as List<String>);
+        json['Author'] as String,
+        json['Title'] as String,
+        json['Quote'] as String,
+        json['Tags'].split(","));
   }
 }

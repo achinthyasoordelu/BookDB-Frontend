@@ -52,7 +52,6 @@ class _QuoteList extends State<QuoteList> {
       setState(() => isPerformingRequest = true);
       List<Quote> quoteList = new List();
       quoteList.addAll(await fetchQuote(widget.queryURL));
-        //TODO add some iterator to note to get next page of results
       setState(() {
         items.addAll(quoteList);
         isPerformingRequest = false;
