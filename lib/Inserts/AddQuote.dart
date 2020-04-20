@@ -27,6 +27,7 @@ class _AddQuote extends State<AddQuote> {
   Set<String> selectedTags = new Set();
   String _selectedTags = "";
   Future<Tags> futureTags;
+  final TextEditingController _quoteController = new TextEditingController();
   final _addQuoteFormKey = GlobalKey<FormState>();
   Quote quote = new Quote("","","",[]);
 
@@ -54,7 +55,7 @@ class _AddQuote extends State<AddQuote> {
         title: Text("Add Quote"),
       ),
       body: Center(
-        child: Form( //TODO form validation
+        child: Form(
           key: _addQuoteFormKey,
           child: SingleChildScrollView(
             child: Column(
@@ -101,12 +102,14 @@ class _AddQuote extends State<AddQuote> {
                     child: TextFormField( //TODO add formatting capabilities
                         onSaved: (String value) {
                           quote.quote = value;
+                          _quoteController.clear();
                         },
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter a quote';
                           }
                         },
+                        controller: _quoteController,
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         decoration: InputDecoration(
@@ -133,6 +136,7 @@ class _AddQuote extends State<AddQuote> {
                       print("Valid input");
                       _addQuoteFormKey.currentState.save(); //Load title, author, and quote into quote model
                       loadSelectedTagsIntoQuote();
+                      resetTags(); //Clear tags after submit for next submit
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {

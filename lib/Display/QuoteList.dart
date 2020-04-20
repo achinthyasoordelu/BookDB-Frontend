@@ -120,7 +120,7 @@ class _QuoteList extends State<QuoteList> {
       return Card(
           child: Column(
             children: <Widget>[
-              Text(
+              SelectableText(
                 quote.title + String.fromCharCode(mdash) + quote.author,
                 style: TextStyle(
                   decoration: TextDecoration.underline,
@@ -130,7 +130,7 @@ class _QuoteList extends State<QuoteList> {
               ),
               Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: Text(
+                  child: SelectableText(
                       quote.quote,
                       style: TextStyle(
                         fontSize: 15,
