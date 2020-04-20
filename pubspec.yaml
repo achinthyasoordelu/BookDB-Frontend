@@ -40,3 +40,5 @@ flutter:
     - family: NotoSerif
       fonts:
         - asset: assets/NotoSerif-Regular.ttf
+  assets:
+    - assets/icons8-edit-24.png

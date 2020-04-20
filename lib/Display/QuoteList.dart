@@ -95,7 +95,7 @@ class _QuoteList extends State<QuoteList> {
       return Card(
           child: Column(
             children: <Widget>[
-              Text(
+              SelectableText(
                 quote.title + String.fromCharCode(mdash) + quote.author,
                 style: TextStyle(
                   decoration: TextDecoration.underline,
@@ -103,16 +103,26 @@ class _QuoteList extends State<QuoteList> {
                   fontFamily: 'NotoSerif',
                 ),
               ),
-              Padding(
+              Container(
                   padding: EdgeInsets.all(10.0),
-                  child: Text(
-                      quote.quote,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'NotoSerif',
-                      )
+                  child: SelectableText(
+                    quote.quote,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'NotoSerif',
+                    ),
                   )
               ),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: GestureDetector(
+                      onTap: () {
+                        print(quote.quote);
+                        //TODO route to edit screen, passing quote info and ID
+                      },
+                      child: Image.asset('assets/icons8-edit-24.png')
+                  )
+              )
             ],
           )
       );
@@ -128,14 +138,14 @@ class _QuoteList extends State<QuoteList> {
                   fontFamily: 'NotoSerif',
                 ),
               ),
-              Padding(
+              Container(
                   padding: EdgeInsets.all(10.0),
                   child: SelectableText(
                       quote.quote,
                       style: TextStyle(
                         fontSize: 15,
                         fontFamily: 'NotoSerif',
-                      )
+                      ),
                   )
               ),
               Text(
@@ -145,6 +155,16 @@ class _QuoteList extends State<QuoteList> {
                     fontFamily: 'NotoSerif',
                   )
               ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: GestureDetector(
+                    onTap: () {
+                      print(quote.quote);
+                      //TODO route to edit screen, passing quote info and ID
+                    },
+                    child: Image.asset('assets/icons8-edit-24.png')
+                )
+              )
             ],
           )
       );
