@@ -27,7 +27,7 @@ class _TagSearch extends State<TagSearch> {
     void addTag(String tag) {
         selectedTags.add(tag);
         setState(() => _selectedTags = selectedTags.toString()
-            .replaceAll(' ', '')
+            .replaceAll(', ', ',')
             .replaceAll('{', '')
             .replaceAll('}', ''));
     }
@@ -49,7 +49,6 @@ class _TagSearch extends State<TagSearch> {
             ),
             RaisedButton(
               onPressed: () {
-                print(_selectedTags);
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
                     QuoteList(queryURL: global.baseURL + "query/tagSearch/" + _selectedTags,
                               headerDisplay: _selectedTags)));

@@ -39,7 +39,7 @@ class _AddQuote extends State<AddQuote> {
   void addTag(String tag) {
     selectedTags.add(tag);
     setState(() => _selectedTags = selectedTags.toString()
-        .replaceAll(' ', '')
+        .replaceAll(', ', ',')
         .replaceAll('{', '')
         .replaceAll('}', ''));
   }
@@ -131,9 +131,7 @@ class _AddQuote extends State<AddQuote> {
                 RaisedButton(
                   padding: EdgeInsets.all(10.0),
                   onPressed: () {
-                    print(_selectedTags);
                     if (_addQuoteFormKey.currentState.validate() && _selectedTags != "") {
-                      print("Valid input");
                       _addQuoteFormKey.currentState.save(); //Load title, author, and quote into quote model
                       loadSelectedTagsIntoQuote();
                       resetTags(); //Clear tags after submit for next submit
