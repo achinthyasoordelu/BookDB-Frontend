@@ -27,7 +27,7 @@ class _TagSearch extends State<TagSearch> {
     void addTag(String tag) {
         selectedTags.add(tag);
         setState(() => _selectedTags = selectedTags.toString()
-            .replaceAll(' ', '')
+            .replaceAll(', ', ',')
             .replaceAll('{', '')
             .replaceAll('}', ''));
     }

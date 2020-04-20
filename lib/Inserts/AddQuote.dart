@@ -39,7 +39,7 @@ class _AddQuote extends State<AddQuote> {
   void addTag(String tag) {
     selectedTags.add(tag);
     setState(() => _selectedTags = selectedTags.toString()
-        .replaceAll(' ', '')
+        .replaceAll(', ', ',')
         .replaceAll('{', '')
         .replaceAll('}', ''));
   }
