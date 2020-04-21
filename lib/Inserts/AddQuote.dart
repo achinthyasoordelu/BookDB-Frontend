@@ -29,7 +29,7 @@ class _AddQuote extends State<AddQuote> {
   Future<Tags> futureTags;
   final TextEditingController _quoteController = new TextEditingController();
   final _addQuoteFormKey = GlobalKey<FormState>();
-  Quote quote = new Quote("","","",[]);
+  Quote quote = new Quote(0, "","","",new Set());
 
   void resetTags() {
     selectedTags = new Set();
@@ -45,7 +45,7 @@ class _AddQuote extends State<AddQuote> {
   }
 
   void loadSelectedTagsIntoQuote() {
-    quote.tags = _selectedTags.split(",");
+    quote.tags = _selectedTags.split(",").toSet();
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:BookDBFrontend/Inserts/EditQuote.dart';
 import 'package:BookDBFrontend/Models/Quote.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -117,8 +118,9 @@ class _QuoteList extends State<QuoteList> {
                   alignment: Alignment.bottomRight,
                   child: GestureDetector(
                       onTap: () {
-                        print(quote.quote);
-                        //TODO route to edit screen, passing quote info and ID
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) =>
+                            EditQuote(quote: quote)));
                       },
                       child: Image.asset('assets/icons8-edit-24.png')
                   )
@@ -157,13 +159,14 @@ class _QuoteList extends State<QuoteList> {
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: GestureDetector(
-                    onTap: () {
-                      print(quote.quote);
-                      //TODO route to edit screen, passing quote info and ID
-                    },
-                    child: Image.asset('assets/icons8-edit-24.png')
-                )
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) =>
+                            EditQuote(quote: quote)));
+                      },
+                      child: Image.asset('assets/icons8-edit-24.png')
+                  )
               )
             ],
           )
