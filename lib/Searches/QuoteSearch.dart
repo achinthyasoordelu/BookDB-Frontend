@@ -39,9 +39,32 @@ class _QuoteSearch extends State<QuoteSearch> {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                    QuoteList(queryURL: global.baseURL + "query/quoteSearch/" + quoteSearchController.text,
-                        headerDisplay: quoteSearchController.text)));
+                if (quoteSearchController.text.replaceAll(" ", "").length == 0) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: new Text("Error"),
+                            content: new Text("Add a search term"),
+                            actions: <Widget> [
+                              new FlatButton(
+                                  child: new Text("Close"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }
+                              )
+                            ]
+                        );
+                      }
+                  );
+                } else {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) =>
+                      QuoteList(
+                          queryURL: global.baseURL + "query/quoteSearch/" +
+                              quoteSearchController.text,
+                          headerDisplay: quoteSearchController.text)));
+                }
               },
               child: Text('Submit'),
             ),

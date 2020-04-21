@@ -33,9 +33,32 @@ class _TitleOrAuthorSearch extends State<TitleOrAuthorSearch> {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                    QuoteList(queryURL: global.baseURL + "query/titleOrAuthorSearch/" + titleOrAuthorSearchController.text,
-                        headerDisplay: titleOrAuthorSearchController.text)));
+                if (titleOrAuthorSearchController.text.replaceAll(" ", "").length == 0) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: new Text("Error"),
+                            content: new Text("Add a search term"),
+                            actions: <Widget> [
+                              new FlatButton(
+                                  child: new Text("Close"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }
+                              )
+                            ]
+                        );
+                      }
+                  );
+                } else {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) =>
+                      QuoteList(queryURL: global.baseURL +
+                          "query/titleOrAuthorSearch/" +
+                          titleOrAuthorSearchController.text,
+                          headerDisplay: titleOrAuthorSearchController.text)));
+                }
               },
               child: Text('Submit'),
             ),

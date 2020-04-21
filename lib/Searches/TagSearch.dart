@@ -49,9 +49,31 @@ class _TagSearch extends State<TagSearch> {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                    QuoteList(queryURL: global.baseURL + "query/tagSearch/" + _selectedTags,
-                              headerDisplay: _selectedTags)));
+                if (_selectedTags.length == 0) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: new Text("Error"),
+                            content: new Text("No tags selected"),
+                            actions: <Widget> [
+                              new FlatButton(
+                                  child: new Text("Close"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }
+                              )
+                            ]
+                        );
+                      }
+                  );
+                } else {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) =>
+                      QuoteList(queryURL: global.baseURL + "query/tagSearch/" +
+                          _selectedTags,
+                          headerDisplay: _selectedTags)));
+                }
               },
               child: Text('Submit'),
             ),
