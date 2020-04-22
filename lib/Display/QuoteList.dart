@@ -96,24 +96,23 @@ class _QuoteList extends State<QuoteList> {
       return Card(
           child: Column(
             children: <Widget>[
-              SelectableText(
+              Text(
                 quote.title + String.fromCharCode(mdash) + quote.author,
                 style: TextStyle(
                   decoration: TextDecoration.underline,
-                  fontSize: 12,
+                  fontSize: 15,
                   fontFamily: 'NotoSerif',
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: SelectableText(
-                    quote.quote,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'NotoSerif',
-                    ),
-                  )
+              SizedBox(height: 10),
+              Text(
+                quote.quote,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'NotoSerif',
+                ),
               ),
+              SizedBox(height: 10),
               Align(
                   alignment: Alignment.bottomRight,
                   child: GestureDetector(
@@ -132,28 +131,27 @@ class _QuoteList extends State<QuoteList> {
       return Card(
           child: Column(
             children: <Widget>[
-              SelectableText(
+              Text(
                 quote.title + String.fromCharCode(mdash) + quote.author,
                 style: TextStyle(
                   decoration: TextDecoration.underline,
-                  fontSize: 12,
+                  fontSize: 15,
                   fontFamily: 'NotoSerif',
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: SelectableText(
-                      quote.quote,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'NotoSerif',
-                      ),
-                  )
+              SizedBox(height: 10),
+              Text(
+                quote.quote,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'NotoSerif',
+                ),
               ),
+              SizedBox(height: 10),
               Text(
                   "Tags: "+ quote.tags.toString(),
                   style: TextStyle(
-                    fontSize: 8,
+                    fontSize: 10,
                     fontFamily: 'NotoSerif',
                   )
               ),
