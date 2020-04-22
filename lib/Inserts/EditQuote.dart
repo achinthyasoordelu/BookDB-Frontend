@@ -8,7 +8,7 @@ import 'package:BookDBFrontend/Models/UI/TagDropdown.dart';
 
 Future<http.Response> postEditedQuote(Quote quote) {
   return http.post(
-    global.baseURL + "editQuote", //TODO confirm
+    global.baseURL + "updateQuote",
     headers: <String, String> {
       'Content-Type' : 'application/json; charset=UTF-8',
     },
