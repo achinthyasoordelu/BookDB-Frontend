@@ -1,3 +1,4 @@
+import 'package:BookDBFrontend/globals.dart' as global;
 import 'package:BookDBFrontend/Inserts/EditQuote.dart';
 import 'package:BookDBFrontend/Models/Quote.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,10 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
-Future<List<Quote>> fetchQuote(url) async {
+Future<List<Quote>> fetchQuote(url, isContinue) async {
+  if (isContinue) {
+    url = global.baseURL + "query/continueQuery/";
+  }
   final response = await http.get(url);
   if (response.statusCode == 200) {
     var quotesJson = json.decode(response.body)['quotes'] as List;
@@ -52,7 +56,7 @@ class _QuoteList extends State<QuoteList> {
     if (!isPerformingRequest) {
       setState(() => isPerformingRequest = true);
       List<Quote> quoteList = new List();
-      quoteList.addAll(await fetchQuote(widget.queryURL));
+      quoteList.addAll(await fetchQuote(widget.queryURL, items.length > 0));
       setState(() {
         items.addAll(quoteList);
         isPerformingRequest = false;
